@@ -14,31 +14,31 @@
             </div>
             <div class="article-content">
               <div class="button-row">
-                <div class="button">
+                <div class="button" @click="selectCity('Taipei')">
                   <img src="../assets/bus-icon.png" alt="">
                   <h4>台北</h4>
                 </div>
-                <div class="button">
+                <div class="button" @click="selectCity('Taichung')">
                   <img src="../assets/bus-icon.png" alt="">
                   <h4>台中</h4>
                 </div>
               </div>
               <div class="button-row">
-                <div class="button">
+                <div class="button" @click="selectCity('Kaohsiung')">
                   <img src="../assets/bus-icon.png" alt="">
                   <h4>高雄</h4>
                 </div>
-                <div class="button">
+                <div class="button" @click="selectCity('Tainan')">
                   <img src="../assets/bus-icon.png" alt="">
                   <h4>台南</h4>
                 </div>
               </div>
               <div class="button-row">
-                <div class="button">
+                <div class="button" @click="selectCity('Hsinchu')">
                   <img src="../assets/bus-icon.png" alt="">
                   <h4>新竹</h4>
                 </div>
-                <div class="button">
+                <div class="button" @click="$router.push('/other-city')">
                   <img src="../assets/bus-icon.png" alt="">
                   <div class="other">
                     <h4>其他</h4>
@@ -64,6 +64,7 @@
 import { defineComponent } from 'vue';
 import BaseLayout from '@/layouts/BaseLayout.vue';
 import HeaderBar from '@/components/common/HeaderBar.vue';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
   name: 'Home',
@@ -71,6 +72,40 @@ export default defineComponent({
     BaseLayout,
     HeaderBar,
   },
+  setup() {
+    const router = useRouter();
+    const mainCitiesArray = [
+      {
+        name: '臺北市',
+        value: 'Taipei'
+      },
+      {
+        name: '臺中市',
+        value: 'Taichung'
+      },
+      {
+        name: '高雄市',
+        value: 'Kaohsiung'
+      },
+      {
+        name: '臺南市',
+        value: 'Tainan'
+      },
+      {
+        name: '新竹市',
+        value: 'Hsinchu'
+      },
+    ]
+    const selectCity = (city: string) => {
+      router.push(`/find-bus/${city}`);
+    };
+    const selectOther = () => {
+      router.push('/other-city')
+    }
+    return {
+      selectCity,
+    }
+  }
 });
 </script>
 

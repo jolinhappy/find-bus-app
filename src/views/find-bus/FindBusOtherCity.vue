@@ -4,55 +4,21 @@
       <HeaderBar/>
     </template>
     <template #body>
-      <section class="body-section other"> 
+      <section class="body-section other-city"> 
         <article class="city-list__container">
           <div class="article-title">
-            <img src="../../assets/arrow.png" alt="">
+            <img src="../../assets/arrow.png" alt="back" @click="$router.back()">
             <h3>找公車</h3>
             <div class="decoration-line"></div>
           </div>
           <div class="article-content">
             <div class="city-list">
-              <div class="city-list__button">
-                <img src="../../assets/bus-icon.png" alt="">
-                <h4>台北</h4>
-              </div>
-              <div class="city-list__button">
-                <img src="../../assets/bus-icon.png" alt="">
-                <h4>台中</h4>
-              </div>
-              <div class="city-list__button">
-                <img src="../../assets/bus-icon.png" alt="">
-                <h4>台北</h4>
-              </div>
-              <div class="city-list__button">
-                <img src="../../assets/bus-icon.png" alt="">
-                <h4>台中</h4>
-              </div>
-              <div class="city-list__button">
-                <img src="../../assets/bus-icon.png" alt="">
-                <h4>台北</h4>
-              </div>
-              <div class="city-list__button">
-                <img src="../../assets/bus-icon.png" alt="">
-                <h4>台中</h4>
-              </div>
-              <div class="city-list__button">
-                <img src="../../assets/bus-icon.png" alt="">
-                <h4>台北</h4>
-              </div>
-              <div class="city-list__button">
-                <img src="../../assets/bus-icon.png" alt="">
-                <h4>台中</h4>
-              </div>
-              <div class="city-list__button">
-                <img src="../../assets/bus-icon.png" alt="">
-                <h4>台北</h4>
-              </div>
-              <div class="city-list__button">
-                <img src="../../assets/bus-icon.png" alt="">
-                <h4>台中</h4>
-              </div>
+              <template v-for="city in otherCities" :key="city.value">
+                <div class="city-list__button" @click="selectCity(city.value)">
+                  <img src="../../assets/bus-icon.png" alt="bus-icon">
+                  <h4>{{ city.name }}</h4>
+                </div>
+              </template>
             </div>
           </div>
         </article>
@@ -65,6 +31,8 @@
 import { defineComponent } from 'vue';
 import BaseLayout from '@/layouts/BaseLayout.vue';
 import HeaderBar from '@/components/common/HeaderBar.vue';
+import { otherCityList } from '@/utils/cities';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
   name: 'FindBusOtherCity',
@@ -72,12 +40,23 @@ export default defineComponent({
     BaseLayout,
     HeaderBar,
   },
+  setup() {
+    const otherCities = otherCityList;
+    const router = useRouter();
+    const selectCity = (city: string) => {
+      router.push(`/find-bus/${city}`);
+    };
+    return {
+      otherCities,
+      selectCity,
+    }
+  }
 });
 </script>
 
 <style lang="scss">
 // mobile
-.other {
+.other-city {
   height: calc(100vh - 66px);
   background: linear-gradient(143.04deg, #70EBB0 13.42%, #40CACA 84.3%);
   padding-top: 20px;
@@ -124,6 +103,7 @@ export default defineComponent({
     }
   }
   .article-content {
+    padding-bottom: 60px;
     .city-list {
       &__button {
         height: 50px;
@@ -153,7 +133,7 @@ export default defineComponent({
 
 
 @media screen and (min-width: 768px) {
-  .other {
+  .other-city {
     .article-content {
       display: flex;
       justify-content: center;
@@ -169,13 +149,17 @@ export default defineComponent({
         + .city-list__button {
           margin-top: 0px;
         }
+        &:hover {
+          box-shadow: 0px 4px 10px rgba(19, 23, 20, 0.6);
+          cursor: pointer;
+        }
       }
     }
   }
 }
 
 @media screen and (min-width: 1024px) {
-  .other {
+  .other-city {
     .city-list {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -192,7 +176,5 @@ export default defineComponent({
     }
   }
 }
-
-
 
 </style>

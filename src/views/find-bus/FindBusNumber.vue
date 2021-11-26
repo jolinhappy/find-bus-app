@@ -3,57 +3,47 @@
     <template #header>
       <HeaderBar/>
       <div class="search-bar">
-        <img src="../../assets/arrow.png" alt="">
-        <div class="city">台北</div>
-        <input type="text" placeholder="搜尋公車號">
+        <img src="../../assets/arrow.png" alt="back" @click="$router.back()">
+        <div class="city">{{ currentCity }}</div>
+        <input type="text" placeholder="搜尋公車號" v-model="searchInput">
       </div>
     </template>
     <template #body>
       <section class="bus-info">
         <article class="bus-list">
-          <BusInfoCard />
-          <BusInfoCard />
-          <BusInfoCard />
-          <BusInfoCard />
-          <BusInfoCard />
-          <BusInfoCard />
-          <BusInfoCard />
-          <BusInfoCard />
-          <BusInfoCard />
-          <BusInfoCard />
-          <BusInfoCard />
-          <BusInfoCard />
-          <BusInfoCard />
-          <BusInfoCard />
-          <BusInfoCard />
-          <BusInfoCard />
-          <BusInfoCard />
-          <BusInfoCard />
+          <template v-if="busRoutes.length > 0">
+            <template v-for="routeInfo in busRoutes" :key="routeInfo.RouteUID">
+              <BusInfoCard :routeInfo="routeInfo"/>
+            </template>
+          </template>
+          <template v-else>
+            <p>未查詢到相關公車路線！</p>
+          </template>
         </article>
         <article class="search-keyboard">
           <div class="keyboard">
-            <div class="keyboard__item red">紅</div>
-            <div class="keyboard__item blue">藍</div>
-            <div class="keyboard__item">1</div>
-            <div class="keyboard__item">2</div>
-            <div class="keyboard__item">3</div>
+            <div class="keyboard__item red" @click="keyInMiniKeyboard('紅')">紅</div>
+            <div class="keyboard__item blue" @click="keyInMiniKeyboard('藍')">藍</div>
+            <div class="keyboard__item" @click="keyInMiniKeyboard('1')">1</div>
+            <div class="keyboard__item" @click="keyInMiniKeyboard('2')">2</div>
+            <div class="keyboard__item" @click="keyInMiniKeyboard('3')">3</div>
             <!--  -->
-            <div class="keyboard__item green">綠</div>
-            <div class="keyboard__item brown">棕</div>
-            <div class="keyboard__item middle-row-item">4</div>
-            <div class="keyboard__item middle-row-item">5</div>
-            <div class="keyboard__item middle-row-item">6</div>
+            <div class="keyboard__item green" @click="keyInMiniKeyboard('綠')">綠</div>
+            <div class="keyboard__item brown" @click="keyInMiniKeyboard('棕')">棕</div>
+            <div class="keyboard__item middle-row-item" @click="keyInMiniKeyboard('4')">4</div>
+            <div class="keyboard__item middle-row-item" @click="keyInMiniKeyboard('5')">5</div>
+            <div class="keyboard__item middle-row-item" @click="keyInMiniKeyboard('6')">6</div>
             <!--  -->
-            <div class="keyboard__item orange">橘</div>
-            <div class="keyboard__item small">小</div>
-            <div class="keyboard__item">7</div>
-            <div class="keyboard__item">8</div>
-            <div class="keyboard__item">9</div>
+            <div class="keyboard__item orange" @click="keyInMiniKeyboard('橘')">橘</div>
+            <div class="keyboard__item small" @click="keyInMiniKeyboard('小')">小</div>
+            <div class="keyboard__item" @click="keyInMiniKeyboard('7')">7</div>
+            <div class="keyboard__item" @click="keyInMiniKeyboard('8')">8</div>
+            <div class="keyboard__item" @click="keyInMiniKeyboard('9')">9</div>
             <!--  -->
-            <div class="keyboard__item">其他</div>
-            <div class="keyboard__item">幹線</div>
-            <div class="keyboard__item zero">0</div>
-            <div class="keyboard__item clear">清除</div>
+            <div class="keyboard__item" @click="keyInMiniKeyboard('其他')">其他</div>
+            <div class="keyboard__item" @click="keyInMiniKeyboard('幹線')">幹線</div>
+            <div class="keyboard__item zero" @click="keyInMiniKeyboard('0')">0</div>
+            <div class="keyboard__item clear" @click="clearInput">清除</div>
           </div>
         </article>
       </section>
@@ -62,10 +52,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref, watch } from 'vue';
 import BaseLayout from '@/layouts/BaseLayout.vue';
 import HeaderBar from '@/components/common/HeaderBar.vue';
 import BusInfoCard from '@/components/common/BusInfoCard.vue';
+import busHandler from '@/api-handler/bus';
+import { useRoute } from 'vue-router';
+import { IBusRoute } from '@/types/api/bus';
+import { taiwanCity } from '@/utils/cities';
+
+type City = {
+  name: string,
+  value: string
+}
 
 export default defineComponent({
   name: 'FindBusNumber',
@@ -74,6 +73,63 @@ export default defineComponent({
     HeaderBar,
     BusInfoCard,
   },
+  setup() {
+    const cityList = taiwanCity;
+    const route = useRoute();
+    const busRoutes = ref<IBusRoute[]>([]);
+    const currentCity = ref<string>('');
+    const searchInput = ref<string>('');
+    const { city } = route.params;
+    const getOneCityAllBusRoute = async(city: string) => {
+      try {
+        const res = await busHandler.getOneCityAllBusRouteInfo(city);
+        if (res) {
+          busRoutes.value = res.data;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    const getCurrentCity = (cityEnglishName: string) => {
+      cityList.forEach((city: City) => {
+        if (cityEnglishName === city.value) {
+          currentCity.value = city.name;
+        }
+      });
+    };
+    const keyInMiniKeyboard = (word: string) => {
+      searchInput.value += word;
+    };
+    const clearInput = () => {
+      searchInput.value = '';
+    };
+    const filterBusRoute = () => {
+      busRoutes.value = busRoutes.value.filter((route) => route.RouteName?.Zh_tw.includes(searchInput.value));
+    };
+    watch(() => searchInput.value, (v: string) => {
+      if (v !== '') {
+        filterBusRoute();
+      } else {
+        getOneCityAllBusRoute(city as string);
+      }
+
+    })
+    return {
+      getOneCityAllBusRoute,
+      getCurrentCity,
+      keyInMiniKeyboard,
+      clearInput,
+      filterBusRoute,
+      busRoutes,
+      currentCity,
+      searchInput,
+      city,
+    }
+  },
+  created() {
+    this.getOneCityAllBusRoute(this.city as string);
+    this.getCurrentCity(this.city as string);
+  }
 });
 </script>
 
@@ -96,6 +152,7 @@ export default defineComponent({
       display: block;
       margin-top: 2px;
       margin-left: 10px;
+      cursor: pointer;
     }
     .city {
       line-height: 44px;
@@ -126,6 +183,11 @@ export default defineComponent({
         & +.list-item {
           margin-top: 12px;
         }
+      }
+      p {
+        font-size: 20px;
+        font-weight: 600;
+        color: #fff;
       }
     }
   }
@@ -194,11 +256,27 @@ export default defineComponent({
       box-sizing: border-box;
       padding-top: 64px;
       background-color: #2FC3B1;
+      min-height: 100vh;
       .bus-list {
-        padding: 30px 35px;
+        padding: 35px 30px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(650px, 1fr));
+        grid-gap: 15px;
         .list-item {
+          max-height: 70px;
+          .bus-name {
+            font-size: 24px;
+          }
+          .bus-way-time {
+            .way, .time {
+              font-size: 18px;
+            }
+          }
           & +.list-item {
-            margin-top: 12px;
+            margin-top: 0px;
+          }
+          &:hover {
+            background: #AFECE4;
           }
         }
       }

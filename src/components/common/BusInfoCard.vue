@@ -1,18 +1,25 @@
 <template>
   <div class="bus-info-card list-item">
-    <div class="bus-name">0東</div>
+    <div class="bus-name">{{ routeInfo?.RouteName?.Zh_tw }}</div>
     <div class="bus-way-time">
-      <div class="way">萬華 - 松仁路</div>
-      <div class="time">06:00 - 22:00</div>
+      <div class="way">{{ routeInfo.DepartureStopNameZh }} - {{ routeInfo.DestinationStopNameZh }}</div>
+      <div class="time">{{ routeInfo.SubRoutes[0]?.FirstBusTime }} - {{ routeInfo.SubRoutes[0]?.LastBusTime }}</div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue';
+import { IBusRoute } from '@/types/api/bus';
 
 export default defineComponent({
   name: 'BusInfoCard',
+  props: {
+    routeInfo: {
+      type: Object as PropType<IBusRoute>,
+      default: () => ({})
+    }
+  },
   setup() {
     return {}
   },
@@ -27,6 +34,7 @@ export default defineComponent({
   display: flex;
   padding: 10.5px 15px;
   align-items: center;
+  cursor: pointer;
   .bus-name {
     font-size: 23px;
     font-weight: 500;
@@ -36,6 +44,8 @@ export default defineComponent({
   .bus-way-time {
     display: flex;
     flex-direction: column;
+    line-height: 150%;
+    align-items: flex-end;
   }
 }
 </style>
