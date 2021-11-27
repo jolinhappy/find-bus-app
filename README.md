@@ -36,7 +36,7 @@ yarn serve
 ## 第三方服務
 - google maps
 ## UI設計師
-- [K.T](https://www.facebook.com/K.T1003/)
+- [ching](https://www.figma.com/file/6UVRuBcqKn2dvOKCzU1Nfs/%E7%AD%89%E7%AD%89%E5%85%AC%E8%BB%8A?node-id=3%3A4)
 
 ## 前端開發人員
 - [Phoebe Hsu](https://github.com/jolinhappy)
