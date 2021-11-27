@@ -97,7 +97,7 @@ export default defineComponent({
       },
     ]
     const selectCity = (city: string) => {
-      router.push(`/find-bus/${city}`);
+      router.push(`/find-bus-route/${city}`);
     };
     const selectOther = () => {
       router.push('/other-city')
@@ -115,6 +115,7 @@ export default defineComponent({
   .body-section {
     height: 100%;
     background: linear-gradient(143.04deg, #70EBB0 13.42%, #40CACA 84.3%);
+    position: relative;
     h2 {
       padding: 25px 0;
       font-size: 28px;
@@ -221,10 +222,9 @@ export default defineComponent({
 @media screen and (min-width: 768px) {
   .home {
     article.highway-bus {
-      all: unset;
-      position: absolute;
-      left: 50%;
-      bottom: 13%;
+      // all: unset;
+      display: none;
+      // bottom: 0%;
       transform: translate(-50%);
       .article-title {
         width: 290px;

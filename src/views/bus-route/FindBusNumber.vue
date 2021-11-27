@@ -13,7 +13,7 @@
         <article class="bus-list">
           <template v-if="busRoutes.length > 0">
             <template v-for="routeInfo in busRoutes" :key="routeInfo.RouteUID">
-              <BusInfoCard :routeInfo="routeInfo"/>
+              <BusInfoCard :routeInfo="routeInfo" @click="$router.push(`${city}/${routeInfo.RouteName?.Zh_tw}`)"/>
             </template>
           </template>
           <template v-else>
@@ -60,14 +60,10 @@ import busHandler from '@/api-handler/bus';
 import { useRoute } from 'vue-router';
 import { IBusRoute } from '@/types/api/bus';
 import { taiwanCity } from '@/utils/cities';
-
-type City = {
-  name: string,
-  value: string
-}
+import { City } from '@/types/common';
 
 export default defineComponent({
-  name: 'FindBusNumber',
+  name: 'FindBusStaion',
   components: {
     BaseLayout,
     HeaderBar,

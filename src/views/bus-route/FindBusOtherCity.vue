@@ -44,7 +44,7 @@ export default defineComponent({
     const otherCities = otherCityList;
     const router = useRouter();
     const selectCity = (city: string) => {
-      router.push(`/find-bus/${city}`);
+      router.push(`/find-bus-route/${city}`);
     };
     return {
       otherCities,
