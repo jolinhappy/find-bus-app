@@ -160,6 +160,7 @@ export default defineComponent({
       padding: 24px 26px 35px 26px;
     }
     &.highway-bus {
+      display: none;
       width: 100%;
       height: 100px;
       background-color: #E8F9F7;
@@ -222,9 +223,7 @@ export default defineComponent({
 @media screen and (min-width: 768px) {
   .home {
     article.highway-bus {
-      // all: unset;
       display: none;
-      // bottom: 0%;
       transform: translate(-50%);
       .article-title {
         width: 290px;

@@ -22,6 +22,10 @@ export default defineComponent({
       lng: 121.5624999
     });
     const initMap = () => {
+      center.value = {
+        lat: Number(props.currentBusStopPostion.lat),
+        lng: Number(props.currentBusStopPostion.lng)
+      };
       map.value = new (window as any).google.maps.Map(document.getElementById("stop-map") as Element, {
         center: center.value,
         zoom: 15,
@@ -38,6 +42,10 @@ export default defineComponent({
     };
 
     watch(() => props.currentBusStopPostion, (v) => {
+      center.value = {
+        lat: Number(v.lat),
+        lng: Number(v.lng)
+      };
       initMap();
     })
 

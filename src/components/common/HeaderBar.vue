@@ -1,8 +1,10 @@
 <template>
   <section class="header-bar">
-    <div class="header-bar__logo">
-      <img src="../../assets/logo.png" alt="">
-    </div>
+    <router-link to="/">
+      <div class="header-bar__logo">
+        <img src="../../assets/logo.png" alt="">
+      </div>
+    </router-link>
     <h1>
       全台公車整合資訊網
     </h1>

@@ -7,8 +7,8 @@
       <h5>發車資訊</h5>
       <section>
         <h6>頭末班車：</h6>
-        <p>平日：0530-2300</p>
-        <p>假日：0540-2300</p>
+        <p>平日：{{ busRouteInfo[0]?.SubRoutes[0].FirstBusTime}}-{{ busRouteInfo[0]?.SubRoutes[0].LastBusTime}}</p>
+        <p>假日：{{ busRouteInfo[0]?.SubRoutes[0].HolidayFirstBusTime}}-{{ busRouteInfo[0]?.SubRoutes[0].HolidayLastBusTime}}</p>
         <h6>營運日期：</h6>
         <div class="operation-time-list">
           <div class="day">
@@ -72,28 +72,38 @@
       <h5>票價資訊</h5>
       <section>
         <h6>收費方式：</h6>
-        <p>一段票，每段15元</p>
+        <p>{{ busRouteInfo[0]?.TicketPriceDescriptionZh || '-' }}</p>
       </section>
       <h5>服務客運</h5>
       <section>
         <h6>客運業者：</h6>
-        <p>大都會客運</p>
+        <p>{{ busOperatorInfo?.OperatorName.Zh_tw }}</p>
         <h6>聯繫電話：</h6>
-        <p>0800-053-434</p>
+        <p>{{ busOperatorInfo?.OperatorPhone }}</p>
       </section>
-      <div class="close-button">
-        <img src="../../assets/close.png" alt="">
+      <div class="close-button" @click="$emit('close')">
+        <img src="../../assets/close.png" alt="close" @click="$emit('close')">
       </div>
     </div>
-    
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue';
+import { IBusRoute, IBusStopOfRoute, IStop, IBusN1EstimateTime, IOperator } from '@/types/api/bus';
 
 export default defineComponent({
   name: 'BusRouteInfoDialog',
+  props: {
+    busOperatorInfo: {
+      type: Object as PropType<IOperator>,
+      default: () => ({}),
+    },
+    busRouteInfo: {
+      type: Array as PropType<IBusRoute[]>,
+      default: () => []
+    }
+  },
   setup() {
     return {}
   },
@@ -121,7 +131,6 @@ export default defineComponent({
     width: 100%;
     border-radius: 20px;
     background: #fff;
-    // overflow: hidden;
     position: relative;
     h5 {
       background: #AFECE4;
@@ -136,11 +145,12 @@ export default defineComponent({
       padding: 20px 17px;
       color: #4D514F;
       h6 {
-        font-size: 19px;
+        font-size: 15px;
         line-height: 150%;
+        margin-bottom: 5px;
       }
       p {
-        font-size: 16px;
+        font-size: 12px;
         color: #6e7370;
         line-height: 150%;
       }
