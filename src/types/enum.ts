@@ -58,5 +58,4 @@ export enum StopStatusType {
   NonStop = 2,
   LastBusPassed = 3,
   NonOperation = 4,
-
 }

@@ -14,7 +14,7 @@ export interface IBusRoute {
   RouteUID: string;
   RouteID: string;
   HasSubRoutes: boolean;
-  Operators?: IRouteOperator[],
+  Operators: IRouteOperator[],
   AuthorityID: string;
   ProviderID: string;
   SubRoutes: IBusSubRoute[];
@@ -94,7 +94,7 @@ export interface IRouteOperator {
 }
 
 // 路線圖
-export interface BusShape {
+export interface IBusShape {
   RouteUID: string;
   RouteID: string;
   RouteName: INameType;
@@ -249,4 +249,20 @@ export interface IEstimate {
   EstimateTime?: number;
   IsLastBus?: boolean
   VehicleStopStatus?: A2EventType;
+}
+
+export interface IOperator {
+  ProviderID?: string;
+  OperatorID?: string;
+  OperatorName: INameType;
+  OperatorPhone?: string;
+  OperatorEmail?: string;
+  OperatorUrl?: string;
+  ReservationUrl?: string;
+  ReservationPhone?: string;
+  OperatorCode?: string;
+  AuthorityCode?: string;
+  SubAuthorityCode?: string;
+  OperatorNo?: string;
+  UpdateTime: Date | string;
 }
