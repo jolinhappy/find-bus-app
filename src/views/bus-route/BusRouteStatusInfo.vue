@@ -414,13 +414,6 @@ export default defineComponent({
       goStopInfo,
     }
   },
- async created() {
-    await this.getCurrentCity(this.city as string);
-    await this.getBusRouteInfo();
-    await this.getBusStopOfRoute();
-    await this.getWholeBusStops();
-    await this.formatGeometry(this.currentRoute);
-  }
 });
 </script>
 
