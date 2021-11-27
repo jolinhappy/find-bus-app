@@ -61,15 +61,10 @@ export default defineComponent({
       });
     };
 
-    watch(() => center.value, async(v)=> {
-      await initMap();
-      setPointMakers();
-      
-    });
-
     watch(() => props.geometryArray, () => {
-      initMap();
-      setPointMakers();
+      if (props.geometryArray.length > 0) {
+        initMap();  
+      }
     });
 
     onMounted(() => {

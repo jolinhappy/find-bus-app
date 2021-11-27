@@ -74,18 +74,9 @@ export default defineComponent({
         });
       };
 
-      watch(() => center.value, async(v)=> {
-        await initMap();
-        setPointMakers();
-      });
-
-      watch(() => props.geometryArray, () => {
-        initMap();
-        setPointMakers();
-      });
-
       onMounted(() => {
         center.value = props.geometryArray[0];
+        initMap();
       });
       return {};
     },

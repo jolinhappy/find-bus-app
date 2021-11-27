@@ -282,6 +282,7 @@ export default defineComponent({
           }
           return result;
         }, []);
+        formatGeometry(currentRoute.value);
       } catch (error) {
         console.log(error);
       }
@@ -365,15 +366,13 @@ export default defineComponent({
     };
 
     watch(() => selectedBusDirection.value, async() => {
-      await getWholeBusStops();
-      await formatGeometry(currentRoute.value);
+      getWholeBusStops();
     });
 
     onMounted(async() => {
-      await getBusRouteInfo();
-      await getBusStopOfRoute();
-      await getWholeBusStops();
-      await formatGeometry(currentRoute.value);
+      getBusRouteInfo();
+      getBusStopOfRoute();
+      getWholeBusStops();
       // 每30秒fetch一次資料
       intervalTimer = setInterval(() => {
         if (currentSecond.value == 0) {

@@ -49,9 +49,6 @@ export default defineComponent({
       initMap();
     })
 
-    onMounted(async() => {
-      initMap();
-    });
     return {
       map,
     }
