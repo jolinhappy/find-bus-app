@@ -1,4 +1,7 @@
 <template>
+  <teleport to="body">
+    <LoadingPage v-if="isLoading"/>
+  </teleport>
   <BaseLayout>
     <template #header>
       <HeaderBar/>
@@ -166,7 +169,6 @@
 <teleport to="body">
   <BusRouteMapDialog v-if="isShowRouteMap" @close="isShowRouteMap = false" :geometryArray="geometryArray" />
 </teleport>
-
 </template>
 
 <script lang="ts">
@@ -182,6 +184,7 @@ import { Toast } from "@/utils/toast-helper";
 import RouteMap from '@/components/common/RouteMap.vue';
 import BusRouteInfoDialog from '@/components/common/BusRouteInfoDialog.vue';
 import BusRouteMapDialog from '@/components/common/BusRouteMapDialog.vue';
+import LoadingPage from '@/components/common/LoadingPage.vue';
 import router from '@/router';
 
 interface IwholeInfoType extends IStop {
@@ -197,6 +200,7 @@ export default defineComponent({
     BusRouteInfoDialog,
     BusRouteMapDialog,
     RouteMap,
+    LoadingPage,
   },
   setup() {
     const cityList = taiwanCity;
@@ -215,6 +219,7 @@ export default defineComponent({
     const geometryArray = ref<ILatLngLiteral[]>([]);
     const currentRoute = ref<IStop[]>([]);
     const currentSecond = ref<number>(30);
+    const isLoading = ref<boolean>(true);
     let intervalTimer: ReturnType<typeof setInterval> | undefined;
 
 
@@ -283,8 +288,10 @@ export default defineComponent({
           return result;
         }, []);
         formatGeometry(currentRoute.value);
+        isLoading.value = false;
       } catch (error) {
         console.log(error);
+        isLoading.value = false;
       }
     };
 
@@ -408,6 +415,7 @@ export default defineComponent({
       geometryArray,
       currentRoute,
       currentSecond,
+      isLoading,
       getCurrentCity,
       changeBusDirection,
       statusFilter,

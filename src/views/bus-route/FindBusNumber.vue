@@ -1,4 +1,7 @@
 <template>
+  <teleport to="body">
+    <LoadingPage v-if="isLoading"/>
+  </teleport>
   <BaseLayout>
     <template #header>
       <HeaderBar/>
@@ -61,6 +64,8 @@ import { useRoute } from 'vue-router';
 import { IBusRoute } from '@/types/api/bus';
 import { taiwanCity } from '@/utils/cities';
 import { City } from '@/types/common';
+import LoadingPage from '@/components/common/LoadingPage.vue';
+
 
 export default defineComponent({
   name: 'FindBusStaion',
@@ -68,6 +73,7 @@ export default defineComponent({
     BaseLayout,
     HeaderBar,
     BusInfoCard,
+    LoadingPage,
   },
   setup() {
     const cityList = taiwanCity;
@@ -76,14 +82,17 @@ export default defineComponent({
     const currentCity = ref<string>('');
     const searchInput = ref<string>('');
     const { city } = route.params;
+    const isLoading = ref<boolean>(true);
     const getOneCityAllBusRoute = async(city: string) => {
       try {
         const res = await busHandler.getOneCityAllBusRouteInfo(city);
         if (res) {
           busRoutes.value = res.data;
+          isLoading.value = false;
         }
       } catch (error) {
         console.log(error);
+        isLoading.value = false;
       }
     };
     const getCurrentCity = (cityEnglishName: string) => {
@@ -120,6 +129,7 @@ export default defineComponent({
       currentCity,
       searchInput,
       city,
+      isLoading,
     }
   },
   created() {

@@ -59,8 +59,8 @@
     </template>
   </BaseLayout>
   <teleport to="body">
-  <BusStopMapDialog v-if="isShowStopMap" @close="isShowStopMap = false" :currentBusStopPostion="currentBusStopPostion" />
-</teleport>
+    <BusStopMapDialog v-if="isShowStopMap" @close="isShowStopMap = false" :currentBusStopPostion="currentBusStopPostion" />
+  </teleport>
 </template>
 
 <script lang="ts">
