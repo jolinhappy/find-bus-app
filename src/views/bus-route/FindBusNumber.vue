@@ -85,6 +85,7 @@ export default defineComponent({
     const isLoading = ref<boolean>(true);
     const getOneCityAllBusRoute = async(city: string) => {
       try {
+        isLoading.value = true;
         const res = await busHandler.getOneCityAllBusRouteInfo(city);
         if (res) {
           busRoutes.value = res.data;

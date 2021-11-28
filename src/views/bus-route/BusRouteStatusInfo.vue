@@ -53,7 +53,7 @@
                 </div>
               </div>
               <div class="bus-status__map">
-                <RouteMap :geometryArray="geometryArray"/>
+                <RouteMap :geometryArray="geometryArray" :wholeBusStops="wholeBusStops"/>
               </div>
             </div>
           </article>
@@ -192,6 +192,10 @@ interface IwholeInfoType extends IStop {
   EstimateTime: number | null;
 }
 
+interface IPosionAndName extends ILatLngLiteral {
+  name: string;
+}
+
 export default defineComponent({
   name: 'BusRouteStausInfo',
   components: {
@@ -216,7 +220,7 @@ export default defineComponent({
     const isShowRouteMap = ref<boolean>(false);
     const busOperatorName = ref<string>('');
     const busOperatorInfo = ref<IOperator | null>(null);
-    const geometryArray = ref<ILatLngLiteral[]>([]);
+    const geometryArray = ref<IPosionAndName[]>([]);
     const currentRoute = ref<IStop[]>([]);
     const currentSecond = ref<number>(30);
     const isLoading = ref<boolean>(true);
@@ -270,6 +274,7 @@ export default defineComponent({
 
     const getWholeBusStops = async() => {
       try {
+        isLoading.value = true;
         await getBusEstimatedTimeOfArrival();
         // 預設為去程路線
         currentRoute.value = selectedBusDirection.value === DirectionType.Outbound ? busStopOfRoute.value[DirectionType.Outbound].Stops : busStopOfRoute.value[DirectionType.Return].Stops;
@@ -369,6 +374,7 @@ export default defineComponent({
       geometryArray.value = stops.map((stop) => ({
         lat: stop.StopPosition.PositionLat as number,
         lng: stop.StopPosition.PositionLon as number,
+        name: stop.StopName.Zh_tw
       }))
     };
 
@@ -377,7 +383,7 @@ export default defineComponent({
     };
 
     const sharePageInfo = () => {
-      const string = `查看等等公車的${currentCity.value} ${busName}公車 即時資訊： https://jolinhappy.github.io/find-bus-app/#/${route.fullPath}`
+      const string = `查看等等公車的${currentCity.value} ${busName}公車 即時資訊： https://jolinhappy.github.io/find-bus-app/#${route.fullPath}`
       navigator.clipboard.writeText(string)
       Toast.fire({
         icon: 'success',

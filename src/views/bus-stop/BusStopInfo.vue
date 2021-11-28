@@ -1,4 +1,7 @@
 <template>
+  <teleport to="body">
+    <LoadingPage v-if="isLoading"/>
+  </teleport>
   <BaseLayout>
     <template #header>
       <HeaderBar/>
@@ -75,6 +78,7 @@ import { taiwanCity } from '@/utils/cities';
 import { City, ILatLngLiteral } from '@/types/common';
 import StopMap from '@/components/common/StopMap.vue';
 import BusStopMapDialog from '@/components/common/BusStopMapDialog.vue';
+import LoadingPage from '@/components/common/LoadingPage.vue';
 import { Toast } from "@/utils/toast-helper";
 
 export default defineComponent({
@@ -85,6 +89,7 @@ export default defineComponent({
     BusInfoCard,
     StopMap,
     BusStopMapDialog,
+    LoadingPage,
   },
   setup() {
     const cityList = taiwanCity;
@@ -100,6 +105,7 @@ export default defineComponent({
     });
     const isShowStopMap = ref<boolean>(false);
     const { city, stopName } = route.params;
+    const isLoading = ref<boolean>(true);
 
     const getOneCityAllBusRoute = async(city: string) => {
       try {
@@ -147,6 +153,7 @@ export default defineComponent({
 
     const getBusStopPosition = async() => {
       try {
+        isLoading.value = true;
         const res = await busHandler.getOneBusStopInfo(city as string, stopName as string);
         if (res) {
           const {PositionLon, PositionLat} = res.data[1].StopPosition;
@@ -155,13 +162,15 @@ export default defineComponent({
             lng: PositionLon as number,
           };
         }
+        isLoading.value = false;
       } catch (error) {
         console.log(error);
+        isLoading.value = false;
       }
     };
 
     const sharePageInfo = () => {
-      const string = `查看等等公車的${currentCityZhtw.value} ${stopName}站牌 即時資訊： https://jolinhappy.github.io/find-bus-app/#/${route.fullPath}`
+      const string = `查看等等公車的${currentCityZhtw.value} ${stopName}站牌 即時資訊： https://jolinhappy.github.io/find-bus-app/#${route.fullPath}`
       navigator.clipboard.writeText(string)
       Toast.fire({
         icon: 'success',
@@ -191,7 +200,8 @@ export default defineComponent({
       currentBusStopAllRoutesInfo,
       currentBusStopPostion,
       isShowStopMap,
-      city
+      city,
+      isLoading,
     }
   },
   created() {

@@ -22,11 +22,16 @@ import { defineComponent, ref, onMounted, PropType, watch } from 'vue';
 import { ILatLngLiteral } from '@/types';
 import createHTMLMapMarker from '@/utils/custom-map-helper';
 
+interface IPosionAndName extends ILatLngLiteral {
+  name: string;
+}
+
+
 export default defineComponent({
     name: "BusRouteMapDialog",
     props: {
       geometryArray: {
-        type: Array as PropType<ILatLngLiteral[]>,
+        type: Array as PropType<IPosionAndName[]>,
         default: () => []
       }
     },
@@ -60,16 +65,16 @@ export default defineComponent({
         setPointMakers();
       };
       const setPointMakers = () => {
-        props.geometryArray.map(async(lane) => {
-          if (!lane) return;
-          const { lat, lng } = lane;
-          let latling = await new (window as any).google.maps.LatLng({lat: lat, lng: lng});
+        props.geometryArray.forEach(async(positionInfo, index) => {
+          if (!positionInfo) return;
+          let latling = await new (window as any).google.maps.LatLng({lat: positionInfo.lat, lng: positionInfo.lng});
             const markers = await createHTMLMapMarker({
               latlng: latling,
               map: map.value,
-              html: `<div class="circle-marker">
-                </div`,
-              anchor: new (window as any).google.maps.Point(0, 0),
+              html: `<div class="info-marker">
+                <div class="info">${index + 1}. ${positionInfo.name}</div>
+                <div class="marker"></div>
+              </div>`,
             });
         });
       };
@@ -139,15 +144,31 @@ export default defineComponent({
       }
     }
   }
-  .circle-marker {
+  .info-marker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     position: relative;
-    width: 12px;
-    height: 12px;
-    border: 2px solid #FFFFFF;
-    background: #2FC3B1;
-    border-radius: 50px;
-    left: 16px;
-    top: 18px
-  } 
+    left: -15px;
+    top: -13px;
+    .info {
+      width: auto;
+      background: black;
+      color: #fff;
+      padding: 3px;
+      font-size: 14px;
+      line-height: 150%;
+      background: rgba(26, 46, 53, 0.7);
+      border-radius: 6px;
+      margin-bottom: 6px;
+    }
+    .marker {
+      width: 10px;
+      height: 10px;
+      border-radius: 50px;
+      background: #2FC3B1;
+      border: 2px solid #FFFFFF;
+    }
+  }
 }
 </style>
