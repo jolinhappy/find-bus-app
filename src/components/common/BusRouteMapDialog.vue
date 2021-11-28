@@ -106,7 +106,7 @@ export default defineComponent({
   }
   .map__container {
     width: 100%;
-    height: 87%;
+    height: calc(100vh - 270px);
     box-sizing: border-box;
     border-radius: 8px;
     overflow: hidden;
