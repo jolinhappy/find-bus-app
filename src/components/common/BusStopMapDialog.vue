@@ -5,7 +5,7 @@
       </div>
     </section>
     <section class="dialog-footer">
-      <div class="gps-button">
+      <div class="gps-button" @click="goUseGps">
         <img src="../../assets/share.png" alt="">
         前往導航
       </div>
@@ -55,6 +55,10 @@ export default defineComponent({
         });
       };
 
+      const goUseGps = () => {
+        window.open(`https://www.google.com/maps/dir/${props.currentBusStopPostion.lat},${props.currentBusStopPostion.lng}`);
+      };
+
       watch(() => props.currentBusStopPostion, (v) => {
         center.value = {
           lat: Number(v.lat),
@@ -66,7 +70,9 @@ export default defineComponent({
       onMounted(async() => {
         initMap();
       });
-      return {};
+      return {
+        goUseGps
+      };
     },
 })
 </script>

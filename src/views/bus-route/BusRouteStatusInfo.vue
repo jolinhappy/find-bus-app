@@ -16,7 +16,7 @@
           <div class="info-section__more-info" @click="openRouteInfo">
             <div class="circle"></div>
           </div>
-          <div class="info-section__share-button button pc">
+          <div class="info-section__share-button button pc" @click="sharePageInfo">
             <img src="../../assets/share-blue.png" alt="Share">
             分享頁面
           </div>
@@ -365,6 +365,15 @@ export default defineComponent({
       router.push(`/stop-info/${city}/${stopInfo.StopName.Zh_tw}`);
     };
 
+    const sharePageInfo = () => {
+      const string = `查看等等公車的${currentCity.value} ${busName}公車 即時資訊： https://jolinhappy.github.io/find-bus-app/#/${route.fullPath}`
+      navigator.clipboard.writeText(string)
+      Toast.fire({
+        icon: 'success',
+        title: '太棒了！ 複製成功！'
+      });
+    };
+
     watch(() => selectedBusDirection.value, async() => {
       getWholeBusStops();
     });
@@ -411,6 +420,7 @@ export default defineComponent({
       getBusStopOfRoute,
       formatGeometry,
       goStopInfo,
+      sharePageInfo,
     }
   },
 });

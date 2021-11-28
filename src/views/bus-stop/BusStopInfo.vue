@@ -11,15 +11,15 @@
         </section>
         <section class="info-section">
           <div class="info-section__name">{{ stopName }}</div>
-          <div class="info-section__share-button button mobile">
+          <div class="info-section__share-button button mobile" @click="sharePageInfo">
             <img src="../../assets/share-white.png" alt="Share">
             分享頁面
           </div>
-          <div class="info-section__share-button button pc">
+          <div class="info-section__share-button button pc" @click="sharePageInfo">
             <img src="../../assets/share-blue.png" alt="Share">
             分享頁面
           </div>
-          <div class="info-section__gps button pc">
+          <div class="info-section__gps button pc" @click="goUseGps">
             <img src="../../assets/gps.png" alt="gps">
             前往導航
           </div>
@@ -50,8 +50,8 @@
             <img src="../../assets/map2.png" alt="">
             站牌地圖
           </div>
-          <div class="bus-map-gps__gps-button">
-            <img src="../../assets/gps.png" alt="">
+          <div class="bus-map-gps__gps-button" @click="goUseGps">
+            <img src="../../assets/gps.png" alt="" >
             前往導航
           </div>
         </section>
@@ -75,6 +75,7 @@ import { taiwanCity } from '@/utils/cities';
 import { City, ILatLngLiteral } from '@/types/common';
 import StopMap from '@/components/common/StopMap.vue';
 import BusStopMapDialog from '@/components/common/BusStopMapDialog.vue';
+import { Toast } from "@/utils/toast-helper";
 
 export default defineComponent({
   name: 'BusStopInfo',
@@ -158,6 +159,20 @@ export default defineComponent({
         console.log(error);
       }
     };
+
+    const sharePageInfo = () => {
+      const string = `查看等等公車的${currentCityZhtw.value} ${stopName}站牌 即時資訊： https://jolinhappy.github.io/find-bus-app/#/${route.fullPath}`
+      navigator.clipboard.writeText(string)
+      Toast.fire({
+        icon: 'success',
+        title: '太棒了！ 複製成功！'
+      });
+    };
+
+    const goUseGps = () => {
+      window.open(`https://www.google.com/maps/dir/${currentBusStopPostion.value.lat},${currentBusStopPostion.value.lng}`);
+    };
+
     onMounted(async() => {
       await getOneCityAllBusRoute(city as string);
       await getBusRouteByBusStop();
@@ -168,6 +183,8 @@ export default defineComponent({
       getOneCityAllBusRoute,
       getCurrentCity,
       findBusRoute,
+      sharePageInfo,
+      goUseGps,
       busRoutes,
       currentCityZhtw,
       stopName,
