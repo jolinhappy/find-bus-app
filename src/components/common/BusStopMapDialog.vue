@@ -1,19 +1,20 @@
 <template>
   <div class="stop-map-dialog">
-    <section class="map__container">
-      <div id="map">
-      </div>
-    </section>
-    <section class="dialog-footer">
-      <div class="gps-button" @click="goUseGps">
-        <img src="../../assets/share.png" alt="">
-        前往導航
-      </div>
-      <div class="close-button" @click="$emit('close')">
-        <img src="../../assets/close.png" alt="">
-      </div>       
-    </section>
-   
+    <div class="dialog__container">
+      <section class="map__container">
+        <div id="map">
+        </div>
+      </section>
+      <section class="dialog-footer">
+        <div class="gps-button" @click="goUseGps">
+          <img src="../../assets/share.png" alt="">
+          前往導航
+        </div>
+        <div class="close-button" @click="$emit('close')">
+          <img src="../../assets/close.png" alt="">
+        </div>
+      </section>
+    </div>
   </div>
 </template>
 
@@ -81,57 +82,61 @@ export default defineComponent({
 .stop-map-dialog {
   position: absolute;
   width: 100%;
-  height: calc(100vh - 158px);
-  background: rgba(30, 55, 63, 0.5);
-  backdrop-filter: blur(30px);
-  top: 158px;
-  z-index: 5;
-  padding: 10px;
-  box-sizing: border-box;
-  border-radius: 20px 20px 0px 0px;
-  box-shadow: 0px -4px 10px rgba(19, 23, 20, 0.15);
-  #map {
-    height: 100%;
-  }
-  .map__container {
-    width: 100%;
-    height: calc(100vh - 270px);
+  height: 100vh;
+  top: 0;
+  background: transparent;
+  padding-top: 160px;
+  .dialog__container {
+    background: rgba(30, 55, 63, 0.5);
+    backdrop-filter: blur(30px);
+    padding: 10px;
     box-sizing: border-box;
-    border-radius: 8px;
-    overflow: hidden;
+    border-radius: 20px 20px 0px 0px;
+    box-shadow: 0px -4px 10px rgba(19, 23, 20, 0.15);
+    height: 100%;
+    #map {
+      height: 100%;
+    }
+    .map__container {
+      width: 100%;
+      height: calc(100vh - 270px);
+      box-sizing: border-box;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .dialog-footer {
+      margin-top: 15px;
+      display: flex;
+      .close-button {
+        width: 44px;
+        height: 44px;
+        border-radius: 50px;
+        background: #1E373F;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: auto;
+        img {
+          width: 21px;
+          height: 21px;
+        }
+      }
+      .gps-button {
+        width: 83%;
+        height: 44px;
+        background: #fff;
+        border-radius: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #2FC3B1;
+        font-size: 16px;
+        img {
+          width: 20px;
+          margin-right: 15.5px;
+        }
+      }
+    }  
   }
-  .dialog-footer {
-    margin-top: 15px;
-    display: flex;
-    .close-button {
-      width: 44px;
-      height: 44px;
-      border-radius: 50px;
-      background: #1E373F;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: auto;
-      img {
-        width: 21px;
-        height: 21px;
-      }
-    }
-    .gps-button {
-      width: 83%;
-      height: 44px;
-      background: #fff;
-      border-radius: 40px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: #2FC3B1;
-      font-size: 16px;
-      img {
-        width: 20px;
-        margin-right: 15.5px;
-      }
-    }
-  }  
 }
 </style>

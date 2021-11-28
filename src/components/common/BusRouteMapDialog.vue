@@ -1,19 +1,20 @@
 <template>
   <div class="route-map-dialog">
-    <section class="map__container">
-      <div id="map">
-      </div>
-    </section>
-    <section class="dialog-footer">
-      <div class="gps-button">
-        <img src="../../assets/share.png" alt="">
-        前往導航
-      </div>
-      <div class="close-button" @click="$emit('close')">
-        <img src="../../assets/close.png" alt="">
-      </div>       
-    </section>
-   
+    <div class="dialog__container">
+      <section class="map__container">
+        <div id="map">
+        </div>
+      </section>
+      <section class="dialog-footer">
+        <div class="gps-button">
+          <img src="../../assets/share.png" alt="">
+          前往導航
+        </div>
+        <div class="close-button" @click="$emit('close')">
+          <img src="../../assets/close.png" alt="">
+        </div>
+      </section>
+    </div>
   </div>
 </template>
 
@@ -92,82 +93,87 @@ export default defineComponent({
 .route-map-dialog {
   position: absolute;
   width: 100%;
-  height: calc(100vh - 158px);
-  background: rgba(30, 55, 63, 0.5);
-  backdrop-filter: blur(30px);
-  top: 158px;
-  z-index: 5;
-  padding: 10px;
-  box-sizing: border-box;
-  border-radius: 20px 20px 0px 0px;
-  box-shadow: 0px -4px 10px rgba(19, 23, 20, 0.15);
-  #map {
+  height: 100vh;
+  top: 0;
+  background: transparent;
+  padding-top: 158px;
+  .dialog__container{
     height: 100%;
-  }
-  .map__container {
-    width: 100%;
-    height: calc(100vh - 270px);
+    background: rgba(30, 55, 63, 0.5);
+    backdrop-filter: blur(30px);
+    z-index: 5;
+    padding: 10px;
     box-sizing: border-box;
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  .dialog-footer {
-    margin-top: 15px;
-    display: flex;
-    .close-button {
-      width: 44px;
-      height: 44px;
-      border-radius: 50px;
-      background: #1E373F;
+    border-radius: 20px 20px 0px 0px;
+    box-shadow: 0px -4px 10px rgba(19, 23, 20, 0.15);
+    #map {
+      height: 100%;
+    }
+    .map__container {
+      width: 100%;
+      height: calc(100vh - 270px);
+      box-sizing: border-box;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .dialog-footer {
+      margin-top: 15px;
       display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: auto;
-      img {
-        width: 21px;
-        height: 21px;
+      .close-button {
+        width: 44px;
+        height: 44px;
+        border-radius: 50px;
+        background: #1E373F;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: auto;
+        img {
+          width: 21px;
+          height: 21px;
+        }
+      }
+      .gps-button {
+        width: 83%;
+        height: 44px;
+        background: #fff;
+        border-radius: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #2FC3B1;
+        font-size: 16px;
+        img {
+          width: 20px;
+          margin-right: 15.5px;
+        }
       }
     }
-    .gps-button {
-      width: 83%;
-      height: 44px;
-      background: #fff;
-      border-radius: 40px;
+    .info-marker {
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
-      color: #2FC3B1;
-      font-size: 16px;
-      img {
-        width: 20px;
-        margin-right: 15.5px;
+      position: relative;
+      left: -15px;
+      top: -13px;
+      .info {
+        width: auto;
+        background: black;
+        color: #fff;
+        padding: 3px;
+        font-size: 14px;
+        line-height: 150%;
+        background: rgba(26, 46, 53, 0.7);
+        border-radius: 6px;
+        margin-bottom: 6px;
       }
-    }
-  }
-  .info-marker {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    left: -15px;
-    top: -13px;
-    .info {
-      width: auto;
-      background: black;
-      color: #fff;
-      padding: 3px;
-      font-size: 14px;
-      line-height: 150%;
-      background: rgba(26, 46, 53, 0.7);
-      border-radius: 6px;
-      margin-bottom: 6px;
-    }
-    .marker {
-      width: 10px;
-      height: 10px;
-      border-radius: 50px;
-      background: #2FC3B1;
-      border: 2px solid #FFFFFF;
+      .marker {
+        width: 10px;
+        height: 10px;
+        border-radius: 50px;
+        background: #2FC3B1;
+        border: 2px solid #FFFFFF;
+      }
     }
   }
 }
