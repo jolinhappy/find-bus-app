@@ -289,6 +289,7 @@ export default defineComponent({
         }, []);
         formatGeometry(currentRoute.value);
         isLoading.value = false;
+        secondCountDown();
       } catch (error) {
         console.log(error);
         isLoading.value = false;
@@ -346,11 +347,14 @@ export default defineComponent({
         icon: 'success',
         title: '已更新成功！'
       });
+    };
+
+    const secondCountDown = () => {
+      // 每30秒fetch一次資料
       clearInterval(intervalTimer);
       currentSecond.value = 30;
       intervalTimer = setInterval(() => {
         if (currentSecond.value == 0) {
-          getWholeBusStops();
           currentSecond.value = 30;
         }
         currentSecond.value -= 1;
@@ -389,14 +393,6 @@ export default defineComponent({
       getBusRouteInfo();
       getBusStopOfRoute();
       getWholeBusStops();
-      // 每30秒fetch一次資料
-      intervalTimer = setInterval(() => {
-        if (currentSecond.value == 0) {
-          getWholeBusStops();
-          currentSecond.value = 30;
-        }
-        currentSecond.value -= 1;
-      }, 1000);
     });
     onUnmounted(() => {
       clearInterval(intervalTimer);
@@ -880,6 +876,4 @@ export default defineComponent({
     }
   }
 }
-
-
 </style>
