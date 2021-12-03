@@ -33,11 +33,11 @@
             <div class="button-tabs">
               <div class="bus-status__way-button" :class="{inactive: selectedBusDirection !== 0}" @click="changeBusDirection('Outbound')">
                 <img src="../../assets/bus-gray-icon.png" alt="">
-                往 {{busRouteInfo[0]?.DepartureStopNameZh}}
+                往 {{busRouteInfo[0]?.DestinationStopNameZh}}
               </div>
               <div class="bus-status__way-button" :class="{inactive: selectedBusDirection !== 1}"  @click="changeBusDirection('Return')">
                 <img src="../../assets/bus-gray-icon.png" alt="">
-                往 {{busRouteInfo[0]?.DestinationStopNameZh}}
+                往 {{busRouteInfo[0]?.DepartureStopNameZh}}
               </div>
             </div>
             <div class="bus-status__list-container">
@@ -177,7 +177,7 @@ import BaseLayout from '@/layouts/BaseLayout.vue';
 import HeaderBar from '@/components/common/HeaderBar.vue';
 import { useRoute } from 'vue-router';
 import busHandler from '@/api-handler/bus';
-import { IBusRoute, IBusStopOfRoute, IStop, IBusN1EstimateTime, IOperator, IBusShape, IPointType } from '@/types/api/bus';
+import { IBusRoute, IBusStopOfRoute, IStop, IBusN1EstimateTime, IOperator } from '@/types/api/bus';
 import { taiwanCity } from '@/utils/cities';
 import { City, DirectionType, ILatLngLiteral, StopStatusType } from '@/types';
 import { Toast } from "@/utils/toast-helper";
