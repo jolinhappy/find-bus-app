@@ -38,7 +38,6 @@ export default defineComponent({
   .bus-name {
     font-size: 23px;
     font-weight: 500;
-    margin-right: auto;
     color: #1E373F;
   }
   .bus-way-time {
@@ -46,6 +45,15 @@ export default defineComponent({
     flex-direction: column;
     line-height: 150%;
     align-items: flex-end;
+    width: 60%;
+    margin-left: auto;
+    .way {
+      width: 100%;
+      overflow:hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      text-align: right;
+    }
   }
 }
 </style>

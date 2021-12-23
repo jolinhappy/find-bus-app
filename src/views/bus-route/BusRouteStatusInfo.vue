@@ -526,6 +526,7 @@ export default defineComponent({
       &__way-button {
         height: 43px;
         width: 50%;
+        padding: 10px;
         display: flex;
         font-size: 14px;
         font-weight: 500;
@@ -535,10 +536,14 @@ export default defineComponent({
         justify-content: center;
         align-items: center;
         position: relative;
+        box-sizing: border-box;
+        overflow:hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
         filter: drop-shadow(4px 0px 10px rgba(49, 54, 50, 0.1));
         img {
           width: 18px;
-          margin-right: 30px;
+          margin-right: 20px;
         }
         &.inactive {
           &::after {
@@ -554,8 +559,8 @@ export default defineComponent({
       }
       &__list-container {
         background: #F2F3F1;
-        height: calc(100vh - 201px);
-        padding: 20px;
+        height: calc(100vh - 260px);
+        padding: 20px 20px 30px;
         display: flex;
         flex-direction: column;
         gap: 10px;
