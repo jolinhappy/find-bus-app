@@ -458,7 +458,7 @@ export default defineComponent({
     color: #1E373F;
     display: flex;
     align-items: center;
-    margin-bottom: 12px;
+    margin-bottom: 11px;
     &__name {
       font-weight: 600;
       font-size: 24px;
@@ -559,7 +559,7 @@ export default defineComponent({
       }
       &__list-container {
         background: #F2F3F1;
-        height: calc(100vh - 260px);
+        height: calc(100vh - 245px);
         padding: 20px 20px 30px;
         display: flex;
         flex-direction: column;
@@ -617,7 +617,7 @@ export default defineComponent({
     backdrop-filter: blur(50px);
     border-radius: 20px 20px 0px 0px;
     width: 100%;
-    height: 74px;
+    padding: 8px  0px;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -626,7 +626,7 @@ export default defineComponent({
       justify-content: center;
       align-items: center;
       width: 72%;
-      height: 59%;
+      padding: 4px;
       background: #fff;
       border-radius: 40px;
       color: #2FC3B1;
