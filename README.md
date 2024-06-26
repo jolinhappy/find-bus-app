@@ -1,6 +1,7 @@
 # 【前端修練精神時光屋】 - 等等公車
 使用TDX運輸資料流通服務，以及UI設計師投稿的設計製作的全台找公車服務【等等公車】。
 
+![image](https://github.com/jolinhappy/find-bus-app/assets/58591365/42bb0368-6536-4d30-a11a-ba6a7cfd5936)
 
 ## 網站功能
 - 使用者可查找各縣市的公車路線。
