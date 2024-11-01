@@ -1,28 +1,53 @@
 import axios from 'axios';
-import jsSHA from 'jssha';
+import qs from 'qs';
 
-const baseURL = "https://ptx.transportdata.tw/MOTC/v2/";
+const baseURL = 'https://tdx.transportdata.tw/api/basic/v2';
 const axiosInstance = axios.create({
-  baseURL
+  baseURL,
 });
 
-const getAuthorizationHeader = () => {
-  const AppID = '54426ab2ac294e7b8321fff7695e9743';
-  const AppKey = 'VDrINApKpSc24ec1SCOwwMfTOV4';
-  const GMTString = new Date().toUTCString();
-  const ShaObj = new jsSHA('SHA-1', 'TEXT');
-  ShaObj.setHMACKey(AppKey, 'TEXT');
-  ShaObj.update('x-date: ' + GMTString);
-  const HMAC = ShaObj.getHMAC('B64');
-  const Authorization = 'hmac username="' + AppID + '", algorithm="hmac-sha1", headers="x-date", signature="' + HMAC + '"';
-  return { 'Authorization': Authorization, 'X-Date': GMTString }; 
-}
+const getAuthorizationHeader = async () => {
+  const parameter = {
+    grant_type: 'client_credentials',
+    client_id: 'jolinhappy1990-71000e55-bdc3-4bb5',
+    client_secret: '521e33a3-2e20-4e29-a021-f89f338399a8',
+  };
+  const auth_url = `https://tdx.transportdata.tw/auth/realms/TDXConnect/protocol/openid-connect/token`;
+  try {
+    const res = await axios({
+      method: 'POST',
+      url: auth_url,
+      data: qs.stringify(parameter),
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    });
+    const accessToken = res.data;
+    return {
+      authorization: `Bearer ${accessToken.access_token}`,
+    };
+  } catch (err) {
+    return err;
+  }
+};
 
-axiosInstance.interceptors.request.use(
-  config => {
-    config.headers = getAuthorizationHeader();
-    return config;
-  },
-  err => Promise.reject(err)
-)
+const initializeApiHelper = async () => {
+  const authorization = await getAuthorizationHeader();
+  const GMTString = new Date().toUTCString();
+  if (authorization) {
+    axiosInstance.interceptors.request.use(
+      (config) => {
+        config.headers = {
+          ...(authorization || {}),
+          'X-Date': GMTString,
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        };
+        return config;
+      },
+      (err) => Promise.reject(err)
+    );
+  }
+};
+
+initializeApiHelper();
+
 export const apiHelper = axiosInstance;
